@@ -14378,6 +14378,8 @@ window._ = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a;
 
 Vue.prototype.$arrayHelper = new __WEBPACK_IMPORTED_MODULE_1__ArrayHelper__["a" /* default */]();
 Vue.component('latency-list', __webpack_require__(42));
+Vue.component('host-table-record', __webpack_require__(64));
+Vue.component('add-host-record', __webpack_require__(69));
 Vue.component('host-record', __webpack_require__(48));
 Vue.component('add-host', __webpack_require__(57));
 
@@ -47901,7 +47903,7 @@ exports = module.exports = __webpack_require__(11)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -47945,6 +47947,24 @@ module.exports = function listToStyles (parentId, list) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__HostTableRecordComponent__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__HostTableRecordComponent___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__HostTableRecordComponent__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -47963,7 +47983,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+    components: { HostTableRecordComponent: __WEBPACK_IMPORTED_MODULE_0__HostTableRecordComponent___default.a },
     props: {
         'host_map': {
             type: Object,
@@ -47979,13 +48001,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     mounted: function mounted() {
         this.host_latency_list = this.host_map;
         this.host_list = Object.keys(this.host_map);
+        this.selected_host_list = this.host_list.slice();
         this.getLatencyOfAvailableHosts();
     },
     data: function data() {
         return {
             host_latency_list: {},
             host_list: [],
-            refresh_in: 0
+            selected_host_list: [],
+            refresh_rate: 10, //
+            refresh_in: 0 // to start off...
         };
     },
 
@@ -47999,15 +48024,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.getLatencyOfAvailableHosts();
             }
         },
+        getLatencyOfAvailableHosts: function getLatencyOfAvailableHosts() {
+            var _this = this;
+
+            console.log('pinging');
+            var hosts_param = this.selected_host_list.join(',');
+            console.log(hosts_param);
+            axios.get('/ping?hosts=' + hosts_param).then(function (response) {
+                console.log('Ping Response');
+                console.log(response.data);
+                _this.host_latency_list = response.data;
+                _this.host_list = Array.from(new Set(_this.host_list.concat(Object.keys(_this.host_latency_list))));
+                // this.host_list = Object.keys(this.host_latency_list);
+                // setTimeout(this.getLatencyOfAvailableHosts, 10000);
+                _this.refresh_in = _this.refresh_rate + 1;
+                setTimeout(_this.updateCounter(), 1000);
+            }).catch(function () {
+                _this.refresh_in = _this.refresh_rate + 1;
+                setTimeout(_this.updateCounter(), 1000);
+            });
+        },
         defaultCall: function defaultCall() {
             console.log('Working');
-        },
-        deleteHost: function deleteHost(host_name) {
-            var host_index = this.host_list.indexOf(host_name);
-            if (host_index > -1) {
-                this.host_list.splice(host_index, 1);
-            }
-            this.host_latency_list = _.omit(this.host_latency_list, host_name);
         },
         addHost: function addHost(new_host_name) {
             if (this.host_list.includes(new_host_name)) {
@@ -48019,21 +48057,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.host_latency_list = $.extend({}, new_host, this.host_latency_list);
             }
         },
-        getLatencyOfAvailableHosts: function getLatencyOfAvailableHosts() {
-            var _this = this;
-
-            console.log('pinging');
-            var hosts_param = this.host_list.join(',');
-            axios.get('/ping?hosts=' + hosts_param).then(function (response) {
-                console.log('Ping Response');
-                console.log(response.data);
-                _this.host_latency_list = response.data;
-                _this.host_list = Array.from(new Set(_this.host_list.concat(Object.keys(_this.host_latency_list))));
-                // this.host_list = Object.keys(this.host_latency_list);
-                // setTimeout(this.getLatencyOfAvailableHosts, 10000);
-                _this.refresh_in = 11;
-                setTimeout(_this.updateCounter(), 1000);
-            }).catch(function () {});
+        selectHost: function selectHost(host_name) {
+            console.log("Selecting " + host_name);
+            if (this.selected_host_list.indexOf(host_name) !== -1) {
+                this.selected_host_list.push(host_name);
+            }
+        },
+        unselectHost: function unselectHost(host_name) {
+            console.log("Unselecting " + host_name);
+            var selected_host_index = this.selected_host_list.indexOf(host_name);
+            if (selected_host_index !== -1) {
+                this.selected_host_list.splice(selected_host_index, 1);
+            }
+        },
+        deleteHost: function deleteHost(host_name) {
+            var host_index = this.host_list.indexOf(host_name);
+            if (host_index > -1) {
+                this.host_list.splice(host_index, 1);
+            }
+            this.host_latency_list = _.omit(this.host_latency_list, host_name);
         }
     }
 });
@@ -48046,38 +48088,75 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c("p", [_vm._v(" Check latency of host names or IP addresses (IPv4)")]),
+  return _c("div", [
+    _c("p", [_vm._v(" Check latency of host names or IP addresses (IPv4)")]),
+    _vm._v(" "),
+    _vm.refresh_in != 0
+      ? _c("p", { staticClass: "centered" }, [_vm._v(_vm._s(_vm.refresh_in))])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.refresh_in == 0
+      ? _c("div", [_vm._v("\n        refreshing...\n    ")])
+      : _vm._e(),
+    _vm._v(" "),
+    _c("table", { staticClass: "table table-striped table-dark" }, [
+      _vm._m(0),
       _vm._v(" "),
-      _vm.refresh_in != 0
-        ? _c("p", { staticClass: "centered" }, [_vm._v(_vm._s(_vm.refresh_in))])
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.refresh_in == 0
-        ? _c("div", [_vm._v("\n        refreshing...\n    ")])
-        : _vm._e(),
-      _vm._v(" "),
-      _vm._l(_vm.host_list, function(host_name, index) {
-        return _c("host-record", {
-          key: index,
-          attrs: {
-            latency: _vm.host_latency_list.hasOwnProperty(host_name)
-              ? _vm.host_latency_list[host_name]
-              : "TBA",
-            host_name: host_name
-          },
-          on: { "delete-host": _vm.deleteHost }
-        })
-      }),
-      _vm._v(" "),
-      _c("add-host", { on: { "add-host": _vm.addHost } })
-    ],
-    2
-  )
+      _c(
+        "tbody",
+        [
+          _vm._l(_vm.host_list, function(host_name, index) {
+            return _c(
+              "host-table-record",
+              {
+                key: index,
+                attrs: {
+                  is_selected:
+                    _vm.selected_host_list.indexOf(host_name) != -1
+                      ? true
+                      : false,
+                  host_name: host_name,
+                  latency: _vm.host_latency_list.hasOwnProperty(host_name)
+                    ? _vm.host_latency_list[host_name]
+                    : "TBA"
+                },
+                on: {
+                  "delete-host": _vm.deleteHost,
+                  "select-host": _vm.selectHost,
+                  "unselect-host": _vm.unselectHost
+                }
+              },
+              [_vm._v("\n                >\n            ")]
+            )
+          }),
+          _vm._v(" "),
+          _c("add-host-record", { on: { "add-host": _vm.addHost } })
+        ],
+        2
+      )
+    ])
+  ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Host name or IP (v4)")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [
+          _vm._v("Observed Latency (in milli-sec)")
+        ]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Remove Selected")])
+      ])
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -48665,6 +48744,421 @@ var ArrayHelper = function ArrayHelper() {
 };
 
 /* harmony default export */ __webpack_exports__["a"] = (ArrayHelper);
+
+/***/ }),
+/* 64 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(65)
+}
+var normalizeComponent = __webpack_require__(13)
+/* script */
+var __vue_script__ = __webpack_require__(67)
+/* template */
+var __vue_template__ = __webpack_require__(68)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-6f3d779e"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/HostTableRecordComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-6f3d779e", Component.options)
+  } else {
+    hotAPI.reload("data-v-6f3d779e", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 65 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(66);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(12)("41a1fcca", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6f3d779e\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./HostTableRecordComponent.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6f3d779e\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./HostTableRecordComponent.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 66 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(11)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 67 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: "HostTableRecordComponent",
+    props: ['host_name', 'latency', 'is_selected'],
+    data: function data() {
+        return {
+            isEditing: false
+        };
+    },
+
+    methods: {
+        getLatency: function getLatency() {
+            return this.latency == null ? 'No response' : this.latency;
+        },
+        showForm: function showForm() {
+            this.isEditing = true;
+        },
+        hideForm: function hideForm() {
+            this.isEditing = false;
+        },
+        deleteHost: function deleteHost() {
+            this.$emit('delete-host', this.host_name);
+        },
+        toggleHostSelection: function toggleHostSelection(e) {
+            if (this.is_selected) {
+                this.$emit('unselect-host', this.host_name);
+            } else {
+                this.$emit('select-host', this.host_name);
+            }
+        },
+        cancelChange: function cancelChange() {
+            return false;
+        }
+    }
+});
+
+/***/ }),
+/* 68 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("tr", [
+    _c("td", { attrs: { scope: "row" } }, [
+      _c("input", {
+        attrs: { type: "checkbox", name: _vm.host_name + "_latency" },
+        domProps: { checked: _vm.is_selected },
+        on: {
+          click: function($event) {
+            _vm.toggleHostSelection($event)
+          },
+          change: function($event) {
+            _vm.cancelChange()
+          }
+        }
+      })
+    ]),
+    _vm._v(" "),
+    _c("td", [_vm._v(_vm._s(_vm.host_name))]),
+    _vm._v(" "),
+    _c("td", [_vm._v(_vm._s(_vm.getLatency()))]),
+    _vm._v(" "),
+    _c("td", [
+      _c(
+        "button",
+        { staticClass: "ui basic blue button", on: { click: _vm.deleteHost } },
+        [_vm._v("\n            Remove\n        ")]
+      )
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-6f3d779e", module.exports)
+  }
+}
+
+/***/ }),
+/* 69 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(70)
+}
+var normalizeComponent = __webpack_require__(13)
+/* script */
+var __vue_script__ = __webpack_require__(72)
+/* template */
+var __vue_template__ = __webpack_require__(73)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-1140292e"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/AddHostRecordComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-1140292e", Component.options)
+  } else {
+    hotAPI.reload("data-v-1140292e", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 70 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(71);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(12)("27ae08b2", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1140292e\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./AddHostRecordComponent.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1140292e\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./AddHostRecordComponent.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 71 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(11)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 72 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: "AddHostRecordComponent",
+    data: function data() {
+        return {
+            host_name_input: '',
+            isCreating: false
+        };
+    },
+
+    methods: {
+        openForm: function openForm() {
+            this.isCreating = true;
+        },
+        sendForm: function sendForm() {
+            if (this.host_name_input.length > 0) {
+                var host_name = this.host_name_input;
+                this.$emit('add-host', host_name);
+                this.clearHostNameInput();
+                this.isCreating = false;
+            }
+        },
+        closeForm: function closeForm() {
+            this.isCreating = false;
+            this.clearHostNameInput();
+        },
+        clearHostNameInput: function clearHostNameInput() {
+            this.host_name_input = "";
+        }
+    }
+});
+
+/***/ }),
+/* 73 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("tr", [
+    _c("th", { attrs: { scope: "row" } }, [_vm._v("#")]),
+    _vm._v(" "),
+    _c("td", [
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.host_name_input,
+            expression: "host_name_input"
+          }
+        ],
+        ref: "host name",
+        attrs: { type: "text", defaultValue: "" },
+        domProps: { value: _vm.host_name_input },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.host_name_input = $event.target.value
+          }
+        }
+      })
+    ]),
+    _vm._v(" "),
+    _c("td", [
+      _c(
+        "button",
+        { staticClass: "ui basic red button", on: { click: _vm.closeForm } },
+        [_vm._v("\n            Cancel\n        ")]
+      )
+    ]),
+    _vm._v(" "),
+    _c("td", [
+      _c(
+        "button",
+        {
+          staticClass: "ui basic blue button",
+          on: {
+            click: function($event) {
+              _vm.sendForm()
+            }
+          }
+        },
+        [_vm._v("\n            Create\n        ")]
+      )
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-1140292e", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

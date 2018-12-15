@@ -26,6 +26,8 @@ window._ = _;
 
 Vue.prototype.$arrayHelper = new ArrayHelper();
 Vue.component('latency-list', require('./components/LatencyListComponent'));
+Vue.component('host-table-record', require('./components/HostTableRecordComponent'));
+Vue.component('add-host-record', require('./components/AddHostRecordComponent'));
 Vue.component('host-record', require('./components/HostRecordComponent'));
 Vue.component('add-host', require('./components/AddHostComponent'));
 
