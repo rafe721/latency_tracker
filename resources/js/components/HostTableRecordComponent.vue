@@ -36,12 +36,15 @@
             };
         },
         methods: {
+            // Ensures that latency is represented consistently on the component
             getLatency() {
                 return (this.latency == null) ? 'No response' : this.latency;
             },
+            // Emits delete event
             deleteHost() {
                 this.$emit('delete-host', this.host_name);
             },
+            // Emits events upstream depending on stat of this.is_selected
             toggleHostSelection(e) {
                 if (this.is_selected) {
                     this.$emit('unselect-host', this.host_name);
@@ -49,6 +52,7 @@
                     this.$emit('select-host', this.host_name);
                 }
             },
+            // Clears the input
             cancelChange() {
                 return false;
             }

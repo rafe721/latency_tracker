@@ -176,7 +176,7 @@
                 this.selected_host_list.forEach((item, index) => {
                     this.deleteHost(item, false);
                 });
-                // this.selected_host_list.splice(0, this.selected_host_list.length);
+                this.selected_host_list.splice(0, this.selected_host_list.length);
                 toast({
                     type: 'success',
                     title: 'Removed all selected Host names/IP addresses.'
@@ -186,7 +186,7 @@
              */
             deleteHost(host_name, showText = true) {
                 // unselect the host
-                this.unselectHost(host_name);
+                // this.unselectHost(host_name);
                 // and remove from host_list
                 let host_index = this.host_list.indexOf(host_name);
                 if (host_index > -1) {

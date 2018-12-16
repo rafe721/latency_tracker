@@ -51013,7 +51013,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.selected_host_list.forEach(function (item, index) {
                 _this3.deleteHost(item, false);
             });
-            // this.selected_host_list.splice(0, this.selected_host_list.length);
+            this.selected_host_list.splice(0, this.selected_host_list.length);
             toast({
                 type: 'success',
                 title: 'Removed all selected Host names/IP addresses.'
@@ -51026,7 +51026,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var showText = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
 
             // unselect the host
-            this.unselectHost(host_name);
+            // this.unselectHost(host_name);
             // and remove from host_list
             var host_index = this.host_list.indexOf(host_name);
             if (host_index > -1) {
@@ -51122,12 +51122,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     methods: {
+        // Ensures that latency is represented consistently on the component
         getLatency: function getLatency() {
             return this.latency == null ? 'No response' : this.latency;
         },
+
+        // Emits delete event
         deleteHost: function deleteHost() {
             this.$emit('delete-host', this.host_name);
         },
+
+        // Emits events upstream depending on stat of this.is_selected
         toggleHostSelection: function toggleHostSelection(e) {
             if (this.is_selected) {
                 this.$emit('unselect-host', this.host_name);
@@ -51135,6 +51140,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.$emit('select-host', this.host_name);
             }
         },
+
+        // Clears the input
         cancelChange: function cancelChange() {
             return false;
         }
@@ -51695,7 +51702,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: "CountdownComponent",
     props: {
-        'countdown': {
+        'countdown': { // to represent the current countdown number
             type: Number,
             default: 0
         }

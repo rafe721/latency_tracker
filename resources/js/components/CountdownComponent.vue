@@ -13,7 +13,7 @@
     export default {
         name: "CountdownComponent",
         props : {
-            'countdown' : {
+            'countdown' : { // to represent the current countdown number
                 type : Number,
                 default : 0
             }
