@@ -8,7 +8,8 @@
                    v-model="host_name_input"
                    ref="host name"
                    defaultValue=""
-                   placeholder="Add a new Host or IPv4">
+                   placeholder="Add a new Host or IPv4"
+            @keyup="handleKeyup($event)">
         </td>
         <td>
             <!-- No Latency for the new guy -->
@@ -40,13 +41,26 @@
             };
         },
         methods : {
+            handleKeyup (e) {
+                if (e.keyCode === 13) {
+                    // Trigger the button element with a click
+                    this.sendForm()
+                }
+            },
             sendForm() {
                 if (this.host_name_input.length > 0) {
-                    // Check if name is a valid host name.. No need to check for IP as if not an IP the string will pass as a host name..
-                    const host_name = this.host_name_input;
-                    this.$emit('add-host', host_name);
-                    this.clearHostNameInput();
-                    this.isCreating = false;
+                    if (this.$stringHelper.isValidHostName(this.host_name_input)) {
+                        // Check if name is a valid host name.. No need to check for IP as if not an IP the string will pass as a host name..
+                        const host_name = this.host_name_input;
+                        this.$emit('add-host', host_name);
+                        this.clearHostNameInput();
+                        this.isCreating = false;
+                    } else {
+                        toast({
+                            type: 'error',
+                            title: 'The host name provided is not valid. Please correct it and try again.'
+                        });
+                    }
                 }
             },
             clearHostNameInput() {
