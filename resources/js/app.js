@@ -8,10 +8,21 @@
 require('./bootstrap');
 
 import _ from 'lodash';
+import swal from 'sweetalert2';
+import StringHelper from './StringHelper';
 import ArrayHelper from './ArrayHelper';
+
+const toast = swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000
+});
 
 window.Vue = require('vue');
 window._ = _;
+window.toast = toast;
+
 
 /**
  * The following block of code may be used to automatically register your
@@ -25,9 +36,14 @@ window._ = _;
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key)))
 
 Vue.prototype.$arrayHelper = new ArrayHelper();
+Vue.prototype.$stringHelper = new StringHelper();
+
+// Adding components here so wh can control their tagnames..
 Vue.component('latency-list', require('./components/LatencyListComponent'));
 Vue.component('host-table-record', require('./components/HostTableRecordComponent'));
 Vue.component('add-host-record', require('./components/AddHostRecordComponent'));
+Vue.component('countdown', require('./components/CountdownComponent'));
+
 Vue.component('host-record', require('./components/HostRecordComponent'));
 Vue.component('add-host', require('./components/AddHostComponent'));
 
@@ -37,13 +53,11 @@ Vue.component('add-host', require('./components/AddHostComponent'));
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-
-
 const app = new Vue({
     el: '#app',
     name : 'LatencyTracker',
     components :{
-
+        // we have already added all the required components
     },
     mounted() {
         // on load..
