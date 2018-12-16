@@ -2,22 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="485ac1bd-d1db-4580-9b56-cb295271e227" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/public/css/semantic.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/js/jquery.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/LatencyController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/LatencyController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Services/PingService.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Services/PingService.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/mix-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/mix-manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/StringHelper.js" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/StringHelper.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/components/AddHostRecordComponent.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/AddHostRecordComponent.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/components/LatencyListComponent.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/LatencyListComponent.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/latency_tracker.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/latency_tracker.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/webpack.mix.js" beforeDir="false" afterPath="$PROJECT_DIR$/webpack.mix.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -40,7 +25,7 @@
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="css" value="1" />
-          <entry key="js" value="8" />
+          <entry key="js" value="9" />
           <entry key="json" value="1" />
           <entry key="php" value="15" />
           <entry key="scss" value="1" />
@@ -52,7 +37,7 @@
           <entry key="Blade" value="4" />
           <entry key="CSS" value="1" />
           <entry key="JSON" value="1" />
-          <entry key="JavaScript" value="8" />
+          <entry key="JavaScript" value="9" />
           <entry key="PHP" value="11" />
           <entry key="SCSS" value="1" />
           <entry key="Vue.js" value="14" />
@@ -114,11 +99,20 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/routes/api.php">
           <provider selected="true" editor-type-id="text-editor">
             <state>
               <caret column="5" selection-start-column="5" selection-end-column="5" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/webpack.mix.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
             </state>
           </provider>
         </entry>
@@ -174,7 +168,6 @@
         <option value="$PROJECT_DIR$/resources/js/app.js" />
         <option value="$PROJECT_DIR$/resources/js/components/AddHostRecordComponent.vue" />
         <option value="$PROJECT_DIR$/resources/js/StringHelper.js" />
-        <option value="$PROJECT_DIR$/webpack.mix.js" />
         <option value="$PROJECT_DIR$/public/css/semantic.min.css" />
         <option value="$PROJECT_DIR$/public/js/jquery.js" />
         <option value="$PROJECT_DIR$/resources/views/latency_tracker.blade.php" />
@@ -183,6 +176,7 @@
         <option value="$PROJECT_DIR$/app/Http/Controllers/LatencyController.php" />
         <option value="$PROJECT_DIR$/routes/web.php" />
         <option value="$PROJECT_DIR$/routes/api.php" />
+        <option value="$PROJECT_DIR$/webpack.mix.js" />
       </list>
     </option>
   </component>
@@ -382,12 +376,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1544815168034</updated>
-      <workItem from="1544815169400" duration="71727000" />
+      <workItem from="1544815169400" duration="72029000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="71727000" />
+    <option name="totallyTimeSpent" value="72029000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="51" y="7" width="1317" height="689" extended-state="0" />
@@ -395,15 +389,15 @@
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
       <window_info id="npm" order="1" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="2" visible="true" weight="0.24980111" />
+      <window_info content_ui="combo" id="Project" order="2" visible="true" weight="0.24980111" />
       <window_info id="Structure" order="3" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Terminal" order="0" weight="0.34352517" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="0" visible="true" weight="0.34352517" />
       <window_info anchor="bottom" id="Database Changes" order="1" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="3" show_stripe_button="false" />
       <window_info anchor="bottom" id="Docker" order="4" show_stripe_button="false" />
       <window_info anchor="bottom" id="Message" order="5" />
-      <window_info anchor="bottom" id="Find" order="6" visible="true" weight="0.3291367" />
+      <window_info anchor="bottom" id="Find" order="6" weight="0.3291367" />
       <window_info anchor="bottom" id="Run" order="7" weight="0.3291367" />
       <window_info anchor="bottom" id="Debug" order="8" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="9" weight="0.25" />
@@ -521,13 +515,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/webpack.mix.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="49" selection-start-line="14" selection-start-column="49" selection-end-line="14" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/mix-manifest.json">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -602,6 +589,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <caret column="5" selection-start-column="5" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webpack.mix.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
         </state>
       </provider>
     </entry>
