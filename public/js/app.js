@@ -50889,9 +50889,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     data: function data() {
         return {
-            host_latency_map: {},
-            host_list: [],
-            selected_host_list: [],
+            host_latency_map: {}, // @type object hosts hostname => latency pairs from the server
+            host_list: [], // @type array list of available hosts
+            selected_host_list: [], // @type list of selected hosts...
             // Refresh status & messages
             refreshing_msg: "Refreshing...",
             next_refresh_msg: "Next ping in...",
@@ -50900,7 +50900,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             // Refresh tracking
             refresh_rate: 10, //
             refresh_in: 0, // to start off...
-            refresh_timer: null
+            refresh_timer: null // holds the current timer
         };
     },
     mounted: function mounted() {
@@ -50911,12 +50911,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     methods: {
+        // cancels the counter and pings the server
         pingNow: function pingNow() {
             this.status_text = this.refreshing_msg;
             this.refresh_in = 0;
-            clearInterval(this.refresh_timer);
+            if (this.refresh_timer !== null) {
+                clearInterval(this.refresh_timer);
+            }
             this.getLatencyOfAvailableHosts();
         },
+
+        // updates the counter (minus 1). If the counter reaches 0 (Zero), a ping is sent to the server.
         updateCounter: function updateCounter() {
             var _this = this;
 
@@ -50931,6 +50936,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.getLatencyOfAvailableHosts();
             }
         },
+
+        // Pings server with list of selected hosts
         getLatencyOfAvailableHosts: function getLatencyOfAvailableHosts() {
             var _this2 = this;
 
@@ -50952,6 +50959,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this2.refresh_timer = setTimeout(_this2.updateCounter(), 1000);
             });
         },
+
+        // Manages addition of host into this.host_list and this.selected_host_list
         addHost: function addHost(new_host_name) {
             if (this.$stringHelper.isValidHostName(new_host_name)) {
                 if (this.host_list.includes(new_host_name)) {
@@ -50977,12 +50986,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 });
             }
         },
+
+        // Add host to this.selected_host_list
         selectHost: function selectHost(host_name) {
             // if not already selected
             if (this.selected_host_list.indexOf(host_name) == -1) {
                 this.selected_host_list.push(host_name);
             }
         },
+
+        // Remove
         unselectHost: function unselectHost(host_name) {
             var selected_host_index = this.selected_host_list.indexOf(host_name);
             // if definitely selected
@@ -50990,21 +51003,31 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.selected_host_list.splice(selected_host_index, 1);
             }
         },
+
+        /* Removes contents of this.host_list that are present in $this.selected_host_list and
+         * clears this.selected_host_list
+         */
         deleteSelectedHosts: function deleteSelectedHosts() {
             var _this3 = this;
 
             this.selected_host_list.forEach(function (item, index) {
                 _this3.deleteHost(item, false);
             });
-            this.selected_host_list.splice(0, this.selected_host_list.length);
+            // this.selected_host_list.splice(0, this.selected_host_list.length);
             toast({
                 type: 'success',
                 title: 'Removed all selected Host names/IP addresses.'
             });
         },
+
+        /* Removes given hostname from this.host_list
+         */
         deleteHost: function deleteHost(host_name) {
             var showText = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
 
+            // unselect the host
+            this.unselectHost(host_name);
+            // and remove from host_list
             var host_index = this.host_list.indexOf(host_name);
             if (host_index > -1) {
                 this.host_list.splice(host_index, 1);

@@ -66,9 +66,9 @@
         },
         data() {
             return {
-                host_latency_map :{},
-                host_list : [],
-                selected_host_list : [],
+                host_latency_map :{}, // @type object hosts hostname => latency pairs from the server
+                host_list : [], // @type array list of available hosts
+                selected_host_list : [], // @type list of selected hosts...
                 // Refresh status & messages
                 refreshing_msg : "Refreshing...",
                 next_refresh_msg : "Next ping in...",
@@ -77,7 +77,7 @@
                 // Refresh tracking
                 refresh_rate : 10, //
                 refresh_in : 0, // to start off...
-                refresh_timer : null,
+                refresh_timer : null, // holds the current timer
             }
         },
         mounted() {
@@ -87,12 +87,16 @@
             this.getLatencyOfAvailableHosts();
         },
         methods : {
+            // cancels the counter and pings the server
             pingNow() {
                 this.status_text = this.refreshing_msg;
                 this.refresh_in = 0;
-                clearInterval(this.refresh_timer);
+                if (this.refresh_timer !== null) {
+                    clearInterval(this.refresh_timer);
+                }
                 this.getLatencyOfAvailableHosts();
             },
+            // updates the counter (minus 1). If the counter reaches 0 (Zero), a ping is sent to the server.
             updateCounter () {
                 this.refresh_in--;
                 if (this.refresh_in > 0) {
@@ -103,6 +107,7 @@
                     this.getLatencyOfAvailableHosts();
                 }
             },
+            // Pings server with list of selected hosts
             getLatencyOfAvailableHosts() {
                 // console.log('pinging');
                 let hosts_param = this.selected_host_list.join(',');
@@ -123,6 +128,7 @@
                         this.refresh_timer = setTimeout(this.updateCounter(), 1000);
                     });
             },
+            // Manages addition of host into this.host_list and this.selected_host_list
             addHost(new_host_name) {
                 if (this.$stringHelper.isValidHostName(new_host_name)) {
                     if (this.host_list.includes(new_host_name)) {
@@ -148,12 +154,14 @@
                     });
                 }
             },
+            // Add host to this.selected_host_list
             selectHost(host_name) {
                 // if not already selected
                 if (this.selected_host_list.indexOf(host_name) == -1) {
                     this.selected_host_list.push(host_name);
                 }
             },
+            // Remove
             unselectHost(host_name) {
                 let selected_host_index = this.selected_host_list.indexOf(host_name);
                 // if definitely selected
@@ -161,17 +169,25 @@
                     this.selected_host_list.splice(selected_host_index, 1);
                 }
             },
+            /* Removes contents of this.host_list that are present in $this.selected_host_list and
+             * clears this.selected_host_list
+             */
             deleteSelectedHosts() {
                 this.selected_host_list.forEach((item, index) => {
                     this.deleteHost(item, false);
                 });
-                this.selected_host_list.splice(0, this.selected_host_list.length);
+                // this.selected_host_list.splice(0, this.selected_host_list.length);
                 toast({
                     type: 'success',
                     title: 'Removed all selected Host names/IP addresses.'
                 });
             },
+            /* Removes given hostname from this.host_list
+             */
             deleteHost(host_name, showText = true) {
+                // unselect the host
+                this.unselectHost(host_name);
+                // and remove from host_list
                 let host_index = this.host_list.indexOf(host_name);
                 if (host_index > -1) {
                     this.host_list.splice(host_index , 1);
